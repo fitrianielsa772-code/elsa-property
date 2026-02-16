@@ -145,33 +145,55 @@ header h1{
 <a href="https://wa.link/aqoymb" class="wa-float">Hubungi Kami</a>
 
 <script>
-const sheetURL = "https://opensheet.elk.sh/2PACX-1vTnJfpJJw13UmcMFX0pcrLqNW3twSFwk3KkCx54TSoRN3Vf83_tvZrLB5CF7yztmxsCTVPd_vKnZH9p/Sheet1";
+
+// 🔥 LINK SUDAH DIPERBAIKI (PAKAI ID ASLI ANDA)
+const sheetURL = "https://opensheet.elk.sh/1MpP5T9wwUEqLUH57ZaTpMxilGieWoafRJF6gWK7taJQ/Sheet1";
 
 let properties = [];
 
 fetch(sheetURL)
 .then(res=>res.json())
 .then(data=>{
-  properties = data;
+
+  // Bersihkan data kosong
+  properties = data.filter(item => item.judul && item.gambar);
+
   document.getElementById("loading").style.display="none";
-  displayProperties(data);
+  displayProperties(properties);
+
+})
+.catch(error=>{
+  document.getElementById("loading").innerHTML = "Gagal memuat data. Pastikan Sheet sudah public.";
+  console.error(error);
 });
 
 function displayProperties(data){
   const container=document.getElementById("property-list");
   container.innerHTML="";
+
+  if(data.length === 0){
+    container.innerHTML = "<p style='text-align:center'>Data tidak ditemukan</p>";
+    return;
+  }
+
   data.forEach(item=>{
+
+    let hargaClean = item.harga ? item.harga.toString().replace(/\D/g,'') : "0";
+    let hargaFormat = parseInt(hargaClean).toLocaleString('id-ID');
+
+    let wa = item.whatsapp ? item.whatsapp : "6281234567890";
+
     container.innerHTML+=`
     <div class="card">
-      <img src="${item.gambar}">
+      <img src="${item.gambar}" onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
       <div class="card-body">
         <h3>${item.judul}</h3>
-        <p>${item.spesifikasi}</p>
+        <p>${item.spesifikasi ? item.spesifikasi : '-'}</p>
         <div class="price">
-          RP ${parseInt(item.harga).toLocaleString('id-ID')} / Unit
+          RP ${hargaFormat} / Unit
         </div>
         <a class="btn-wa"
-          href="https://wa.me/${item.whatsapp}?text=Halo%20Saya%20tertarik%20dengan%20${item.judul}"
+          href="https://wa.me/${wa}?text=Halo saya tertarik dengan ${item.judul}"
           target="_blank">
           Tanya via WhatsApp
         </a>
@@ -184,10 +206,11 @@ function displayProperties(data){
 document.getElementById("search").addEventListener("keyup",function(){
   const keyword=this.value.toLowerCase();
   const filtered=properties.filter(p=>
-    p.judul.toLowerCase().includes(keyword)
+    p.judul && p.judul.toLowerCase().includes(keyword)
   );
   displayProperties(filtered);
 });
+
 </script>
 
 </body>
