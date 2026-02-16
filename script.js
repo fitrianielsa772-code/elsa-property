@@ -1,51 +1,60 @@
-const sheetURL = "MASUKKAN_LINK_CSV_DISINI";
+<script>
+const sheetURL = "https://opensheet.elk.sh/2PACX-1vTnJfpJJw13UmcMFX0pcrLqNW3twSFwk3KkCx54TSoRN3Vf83_tvZrLB5CF7yztmxsCTVPd_vKnZH9p/Sheet1";
 
-let allData = [];
+let properties = [];
+const container = document.getElementById("property-list");
+
+container.innerHTML = "<p style='text-align:center;padding:40px;'>Memuat properti...</p>";
 
 fetch(sheetURL)
-  .then(res => res.text())
-  .then(data => {
-    const rows = data.split("\n").slice(1);
+.then(res => res.json())
+.then(data => {
 
-    rows.forEach(row => {
-      const cols = row.split(",");
-      if(cols.length > 6){
-        allData.push({
-          judul: cols[0],
-          kategori: cols[1],
-          lokasi: cols[2],
-          harga: cols[3],
-          gambar: cols[4],
-          deskripsi: cols[5],
-          whatsapp: cols[6]
-        });
-      }
-    });
+    // Normalisasi key supaya tidak sensitif huruf besar
+    properties = data.map(item => ({
+        judul: item.judul || item.Judul || "",
+        kategori: item.kategori || item.Kategori || "",
+        spesifikasi: item.spesifikasi || item.Spesifikasi || "",
+        harga: item.harga || item.Harga || "0",
+        gambar: item.gambar || item.Gambar || "",
+        whatsapp: item.whatsapp || item.Whatsapp || "6281234567890"
+    })).filter(p => p.judul && p.gambar);
 
-    tampilkanData("Semua");
-  });
+    displayProperties(properties);
+})
+.catch(err => {
+    container.innerHTML = "<p style='text-align:center;color:red;'>Gagal memuat data.</p>";
+    console.error(err);
+});
 
-function tampilkanData(kategori){
-  const container = document.getElementById("property-container");
-  container.innerHTML = "";
+function displayProperties(data){
+    container.innerHTML = "";
 
-  allData.forEach(item => {
-    if(kategori === "Semua" || item.kategori === kategori){
-      container.innerHTML += `
-        <div class="card">
-          <img src="${item.gambar}">
-          <div class="card-content">
-            <h3>${item.judul}</h3>
-            <p>${item.lokasi}</p>
-            <div class="price">Rp ${parseInt(item.harga).toLocaleString()}</div>
-            <a class="btn-wa" href="https://wa.me/${item.whatsapp}" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      `;
+    if(data.length === 0){
+        container.innerHTML = "<p style='text-align:center;'>Data tidak ditemukan</p>";
+        return;
     }
-  });
-}
 
-function filterKategori(kategori){
-  tampilkanData(kategori);
+    data.forEach(item => {
+
+        let hargaClean = item.harga.toString().replace(/\D/g,'');
+        let hargaFormat = parseInt(hargaClean || 0).toLocaleString('id-ID');
+
+        container.innerHTML += `
+        <div class="card">
+            <img src="${item.gambar}" onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
+            <div class="card-body">
+                <h3>${item.judul}</h3>
+                <p>${item.spesifikasi}</p>
+                <div class="price">RP ${hargaFormat}</div>
+                <a class="btn-wa"
+                href="https://wa.me/${item.whatsapp}?text=Halo saya tertarik dengan ${item.judul}"
+                target="_blank">
+                Tanya via WhatsApp
+                </a>
+            </div>
+        </div>
+        `;
+    });
 }
+</script>
