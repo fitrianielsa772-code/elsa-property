@@ -3,73 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elsa Property - Agen Properti Profesional</title>
+<title>Elsa Property - Katalog Properti</title>
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <header>
-<div class="logo">ELSA PROPERTY</div>
+<h1>ELSA PROPERTY</h1>
 <nav>
-<a href="#home">Home</a>
-<a href="#properti">Properti</a>
-<a href="#tentang">Tentang</a>
-<a href="#kontak">Kontak</a>
+<button onclick="filterKategori('Semua')">Semua</button>
+<button onclick="filterKategori('Rumah')">Rumah</button>
+<button onclick="filterKategori('Tanah')">Tanah</button>
+<button onclick="filterKategori('Ruko')">Ruko</button>
+<button onclick="filterKategori('Apartemen')">Apartemen</button>
 </nav>
 </header>
 
-<section id="home" class="hero">
-<h1>Temukan Properti Impian Anda</h1>
-<p>Hunian & Investasi Properti Terbaik dan Terpercaya</p>
-<a href="https://wa.me/6281234567890" class="btn">Konsultasi Sekarang</a>
+<section class="hero">
+<h2>Katalog Properti Terbaru</h2>
+<p>Temukan Properti Impian Anda</p>
 </section>
 
-<section id="properti" class="section">
-<h2>Properti Unggulan</h2>
-
-<div class="grid">
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c">
-<h3>Rumah Minimalis 2 Lantai</h3>
-<p>Bekasi - Rp 850 Juta</p>
-<a href="https://wa.me/6281234567890" class="btn-small">Tanya</a>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6">
-<h3>Ruko Strategis</h3>
-<p>Jakarta Timur - Rp 1.2 M</p>
-<a href="https://wa.me/6281234567890" class="btn-small">Tanya</a>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0">
-<h3>Tanah Kavling</h3>
-<p>Tambun - Rp 3 Jt/m2</p>
-<a href="https://wa.me/6281234567890" class="btn-small">Tanya</a>
-</div>
-
-</div>
-</section>
-
-<section id="tentang" class="section bg-light">
-<h2>Tentang Elsa Property</h2>
-<p>
-Elsa Property adalah agen properti profesional yang membantu jual beli rumah,
-tanah, ruko dan investasi properti dengan proses aman dan transparan.
-</p>
-</section>
-
-<section id="kontak" class="section">
-<h2>Hubungi Kami</h2>
-<p>WhatsApp: 0812-3456-7890</p>
-<p>Email: elsaproperty@email.com</p>
+<section class="catalog">
+<div id="property-container" class="grid"></div>
 </section>
 
 <footer>
-<p>© 2026 Elsa Property - All Rights Reserved</p>
+<p>© 2026 Elsa Property</p>
 </footer>
 
 <script src="script.js"></script>
