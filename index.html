@@ -4,35 +4,199 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Elsa Property - Katalog Properti</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:#f4f4f4;}
+
+/* HEADER */
+header{
+  position:absolute;
+  width:100%;
+  padding:20px 50px;
+  display:flex;
+  justify-content:space-between;
+  z-index:10;
+}
+.logo{color:white;font-size:22px;font-weight:700;}
+nav a{color:white;text-decoration:none;margin-left:20px;}
+
+/* HERO */
+.hero{
+  height:100vh;
+  background:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa') center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:white;
+  position:relative;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+}
+.hero-content{position:relative;max-width:800px;}
+.hero h1{font-size:48px;margin-bottom:20px;}
+.hero p{margin-bottom:30px;}
+.btn{
+  padding:12px 30px;
+  background:gold;
+  color:black;
+  text-decoration:none;
+  border-radius:30px;
+  font-weight:600;
+}
+
+/* SECTION */
+.kategori-section{
+  padding:80px 50px;
+  background:white;
+  text-align:center;
+}
+.kategori-section h2{
+  font-size:34px;
+  margin-bottom:40px;
+}
+
+/* GRID */
+.kategori-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+}
+
+/* CARD */
+.produk-card{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+.produk-card:hover{
+  transform:translateY(-8px);
+}
+.produk-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+.produk-info{padding:20px;}
+.produk-info h3{margin-bottom:10px;}
+.produk-info p{font-size:14px;color:#555;margin-bottom:15px;}
+.btn-harga{
+  background:#0f172a;
+  color:white;
+  border:none;
+  padding:10px 20px;
+  border-radius:25px;
+  cursor:pointer;
+  font-weight:600;
+}
+.btn-harga:hover{
+  background:gold;
+  color:black;
+}
+
+/* WHATSAPP FLOAT */
+.wa-float{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  background:#25D366;
+  color:white;
+  padding:14px 20px;
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  z-index:999;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(37,211,102,0.6);}
+  70%{box-shadow:0 0 0 15px rgba(37,211,102,0);}
+  100%{box-shadow:0 0 0 0 rgba(37,211,102,0);}
+}
+
+footer{
+  background:#0f172a;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
+
+@media(max-width:768px){
+  .hero h1{font-size:30px;}
+}
+</style>
 </head>
 <body>
 
 <header>
-<h1>ELSA PROPERTY</h1>
+<div class="logo">ELSA PROPERTY</div>
 <nav>
-<button onclick="filterKategori('Semua')">Semua</button>
-<button onclick="filterKategori('Rumah')">Rumah</button>
-<button onclick="filterKategori('Tanah')">Tanah</button>
-<button onclick="filterKategori('Ruko')">Ruko</button>
-<button onclick="filterKategori('Apartemen')">Apartemen</button>
+<a href="#">Home</a>
+<a href="#katalog">Katalog</a>
 </nav>
 </header>
 
 <section class="hero">
-<h2>Katalog Properti Terbaru</h2>
-<p>Temukan Properti Impian Anda</p>
+<div class="hero-content">
+<h1>Temukan Properti Impian Anda</h1>
+<p>Katalog Properti Terpercaya & Profesional</p>
+<a href="#katalog" class="btn">Lihat Katalog</a>
+</div>
 </section>
 
-<section class="catalog">
-<div id="property-container" class="grid"></div>
+<section id="katalog" class="kategori-section">
+<h2>Katalog Properti</h2>
+<div id="produk-container" class="kategori-grid"></div>
 </section>
 
 <footer>
-<p>© 2026 Elsa Property</p>
+© 2026 Elsa Property
 </footer>
 
-<script src="script.js"></script>
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/6281234567890" class="wa-float" target="_blank">
+Hubungi Kami
+</a>
+
+<!-- LOAD GOOGLE SHEET -->
+<script>
+const sheetCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTnJfpJJw13UmcMFX0pcrLqNW3twSFwk3KkCx54TSoRN3Vf83_tvZrLB5CF7yztmxsCTVPd_vKnZH9p/export?format=csv&gid=0";
+
+fetch(sheetCSV)
+  .then(res => res.text())
+  .then(csv => {
+    const rows = csv.split("\n").filter(r=>r.trim().length);
+    const container = document.getElementById("produk-container");
+
+    rows.slice(1).forEach(row => {
+      const cols = row.split(",");
+
+      if(cols.length >= 5){
+        container.innerHTML += `
+          <div class="produk-card">
+            <img src="${cols[3].trim()}">
+            <div class="produk-info">
+              <h3>${cols[0].trim()}</h3>
+              <p>${cols[1].trim()}</p>
+              <button class="btn-harga">
+                RP: ${parseInt(cols[2]).toLocaleString()} / Unit
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
